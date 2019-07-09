@@ -1,1 +1,22 @@
-{"name":"Max","list":["oo"]}
+ {
+	collectionDebit:[
+		{
+			"commentaire":null,
+			"identifiant":2,
+			"montant":154,
+			"numCompteCible":5,
+			"effectue":"non"
+		}
+	],
+	collectionCredit:[
+		{
+			"commentaire":null,
+			"identifiant":3,
+			"montant":164,
+			"numCompteCible":4,
+			"effectue":"non"
+		}
+	],
+	collectionVirement[
+	]
+}
