@@ -1,17 +1,12 @@
 package fr.banque.main;
-
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import fr.banque.composants.Client;
 import fr.banque.composants.Compte;
@@ -54,8 +49,10 @@ public class Main {
 		for (Client client : collectionClient) {
 
 			str = client.toString();
+			System.out.println(" Affichage des Clients");
+			System.out.println("                                                   ");
 			System.out.println(str);
-
+			System.out.println("                                                   ");
 		}
 	}
 
@@ -85,8 +82,10 @@ public class Main {
 		for (Compte compte : collectionCompte) {
 
 			str = compte.toString();
+			System.out.println("                                                   ");
+			System.out.println(" Affichage des comptes ");
 			System.out.println(str);
-
+			System.out.println("                                                   ");
 		}
 	}
 
@@ -107,7 +106,10 @@ public class Main {
 		Enumeration e = tableID.elements();
 		Enumeration k = tableID.keys();
 		while (e.hasMoreElements())
+			System.out.println("Affichage de la table des identifiants");
+			System.out.println("                                                   ");
 			System.out.println("Identifiant Compte" + k.nextElement() + ":" + e.nextElement());
+		System.out.println("                                                   ");
 
 	}
 
@@ -142,8 +144,10 @@ public class Main {
 		for (Flux flux : tableFlux) {
 
 			str = flux.toString();
+			System.out.println("Affichage des Flux ");
+			System.out.println("                                                   ");
 			System.out.println(str);
-
+			System.out.println("                                                   ");
 		}
 
 	}
@@ -183,43 +187,31 @@ public class Main {
 		}
 	}
 
-	public static void exportJson(ArrayList<Flux> tableFlux) {
 
-		// Nous déclarons nos objets en dehors du bloc try/catch
-		ObjectInputStream ois;
-		ObjectOutputStream oos;
-		System.out.println("Affichage du tableau de Flux :");
-		for (Flux flux : tableFlux) {
-			try {
-				oos = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(new File("flux.json"))));
-
-				// Nous allons écrire chaque objet Game dans le fichier
-				oos.writeObject(flux);
-
-				// Ne pas oublier de fermer le flux !
-				oos.close();
-
-				// On récupère maintenant les données !
-				
-				ois = new ObjectInputStream(new BufferedInputStream(new FileInputStream(new File("flux.json"))));
-					
-				try {
-					
-					
-					System.out.println(((Flux) ois.readObject()).toString());
-				
-				} catch (ClassNotFoundException e) {
-					e.printStackTrace();
-				}
-
-				ois.close();
-
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
+	public  static void exportJson (ArrayList<Flux> tableFlux) {
+		JSONObject obj = new JSONObject();
+		obj.put("name", "Max");
+	    JSONArray list = new JSONArray(); 
+	    list.add("oo");
+	    JSONArray tFlux = new JSONArray();
+	    for (Flux flux : tableFlux)
+	    {
+	    	tFlux.add(flux.getCommentaire().toString());
+	    }
+	    
+	    obj.put("list", list);
+	    obj.put("Table de flux", tFlux);
+	   try (FileWriter file = new FileWriter("flux.json")){
+		   file.write(obj.toString());
+		   file.flush();
+	   }
+	   catch (IOException e) {
+		   e.printStackTrace();
+	   }
+	   System.out.println("Fichier en .JSON");
+	   System.out.println(obj);
+	 
+	       
+	       
 	}
-
 }
