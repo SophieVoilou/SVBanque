@@ -5,6 +5,9 @@ import java.util.Date;
 
 public class Debit extends Flux implements Serializable{
 
+    public Debit() {   
+    }
+    
 	public Debit(String commentaire, int identifiant, double montant, double numCompteCible, boolean effectue,
 			Date dateFlux) {
 		super(commentaire, identifiant, montant, numCompteCible, effectue, dateFlux);

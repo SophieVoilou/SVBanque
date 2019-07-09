@@ -4,15 +4,16 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
-import org.json.simple.parser.JSONParser;
+/*import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
+import org.json.simple.JSONObject;*/
 import java.io.FileReader;
 import fr.banque.composants.Client;
 import fr.banque.composants.Compte;
 import fr.banque.composants.CompteCourant;
 import fr.banque.composants.CompteEpargne;
+import java.io.BufferedReader;
 
 public class Main {
 	// 1.1.2 Création d’un classe main pour les tests
@@ -33,7 +34,8 @@ public class Main {
 		
 
 		mouvementFlux(tableFlux, collectionCompte);
-		exportJson(tableFlux);
+		importJson(tableFlux);
+                afficherFlux(tableFlux);
 	}
 
 	public static void ajouterClient(int x, ArrayList<Client> collectionClient) {
@@ -195,8 +197,57 @@ public class Main {
 	}
 
 
-	public  static void exportJson (ArrayList<Flux> tableFlux) {
-		st
-
+	public static void importJson (ArrayList<Flux> tableFlux) {
+            //tableFlux = new ArrayList<>();
+            String objet = "";
+            String typeObjet = "";
+            try {
+                BufferedReader br = new BufferedReader(new FileReader("flux.json"));
+                String line = br.readLine();
+                while (line != null) {
+                    line = line.replaceAll("\t", "");
+                    line = line.replaceAll(",", "");
+                    if ("collectionDebit:[".equals(line)) {
+                        objet = "";
+                        typeObjet = "Débit";
+                    } else if ("collectionCredit:[".equals(line)) {
+                        objet = "";
+                        typeObjet = "Crédit";
+                    } else if ("collectionVirement:[".equals(line)) {
+                        objet = "";
+                        typeObjet = "Virement";
+                    } else if ("]".equals(line)) {
+                        objet = "";
+                    } else if ("{".equals(line)) {
+                        objet = line + "\r\n";
+                    } else if ("}".equals(line)) {
+                        if (!"".equals(objet)) {
+                            objet += line + "\r\n";
+                            switch (typeObjet) {
+                                case "Débit":
+                                    Debit deb = new Debit();
+                                    deb.fromJson(objet);
+                                    tableFlux.add(deb);
+                                    break;
+                                case "Crédit":
+                                    Credit cred = new Credit();
+                                    cred.fromJson(objet);
+                                    tableFlux.add(cred);
+                                    break;
+                                case "Virement":
+                                    Virement vir = new Virement();
+                                    vir.fromJson(objet);
+                                    tableFlux.add(vir);
+                                    break;
+                            }
+                        }
+                    } else {
+                        objet += line + "\r\n";
+                    }
+                    line = br.readLine();
+                }
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
 	}
 }

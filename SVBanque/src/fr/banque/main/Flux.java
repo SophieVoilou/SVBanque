@@ -4,20 +4,26 @@ import java.io.Serializable;
 import java.util.Date;
 
 public abstract class Flux  implements Serializable{
+    
+    protected final String GUI = "\"";
+    protected final String TAB = "\t";
+    protected final String CRLF = "\r\n";
+    
 	@Override
 	public String toString() {
 		return "Flux [Commentaire=" + commentaire + ", Identifiant=" + identifiant + ", Montant=" + montant
 				+ ", NumCompteCible=" + numCompteCible + ", Effectue=" + effectue + ", dateFlux=" + dateFlux + "]";
 	}
 
-	private String commentaire;
-	private int identifiant;
-	private double montant;
-	private double numCompteCible;
-	private boolean effectue;
-	Date dateFlux = new Date(); // import java.util.Date
+	protected String commentaire;
+	protected int identifiant;
+	protected double montant;
+	protected double numCompteCible;
+	protected boolean effectue;
+	protected Date dateFlux = new Date(); // import java.util.Date
 
-
+    public Flux() {    
+    }
 
 	public Flux(String commentaire, int identifiant, double montant, double numCompteCible, boolean effectue,
 			Date dateFlux) {
@@ -77,5 +83,103 @@ public abstract class Flux  implements Serializable{
 	public void setDateFlux(Date dateFlux) {
 		this.dateFlux = dateFlux;
 	}
+                
+        public String toJson(String p_indentation) {
+            String jsonObject = "";
+            jsonObject += p_indentation + "{";
+            // à compléter
+            if (this.commentaire != null) { 
+                jsonObject += CRLF + p_indentation + TAB + GUI + "commentaire" + GUI + ":" + GUI + this.commentaire + GUI + ",";
+            }
+            jsonObject += CRLF + p_indentation + "}";
+            return jsonObject;
+        }
+
+        public void fromJson(String p_jsonObject) {
+            String object = p_jsonObject;
+            object = object.replaceAll(TAB, "");
+            object = object.replaceAll(GUI, "");
+            object = object.replaceAll(",", "");
+            String[] lines = object.split(CRLF);
+
+            for (String line : lines) {
+                if ("{".equals(line)) {
+
+                } else if ("}".equals(line)) {
+
+                } else {
+                    String[] content = line.split(":");
+                    switch (content[0]) {
+                        case "commentaire":
+                            this.commentaire = content[1];
+                            break;
+                        case "identifiant":
+                            this.identifiant = Integer.valueOf(content[1]);
+                            break;
+                        case "montant":
+                            this.montant = Double.valueOf(content[1]);
+                            break;
+                        case "numCompteCible":
+                            this.numCompteCible = Double.valueOf(content[1]);
+                            break;
+                        case "effectue":
+                            this.effectue = Boolean.valueOf(content[1]);
+                            break;
+                        case "dateFlux":
+                            this.dateFlux = new Date(content[1]); //Need work
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+        }
+                
+        public String toXml(String p_indentation) {
+            String xmlObject = "";
+            xmlObject += p_indentation + "<flux>";
+            // à compléter
+            if (this.commentaire != null) { 
+                xmlObject += CRLF + p_indentation + TAB + "<commentaire>" + this.commentaire + "</commentaire>";
+            }
+            xmlObject += CRLF + p_indentation + "</flux>";
+            return xmlObject;
+        }
+                
+        public void fromXml(String p_xmlObject) {
+            String object = p_xmlObject;
+            object = object.replaceAll(TAB, "");
+            object = object.replaceAll(GUI, "");
+            object = object.replaceAll("/", "");
+            object = object.replaceAll(">", "<");
+            String[] lines = object.split(CRLF);
+
+            for (String line : lines) {
+                String[] content = line.split("<");
+                switch (content[0]) {
+                    case "commentaire":
+                        this.commentaire = content[1];
+                        break;
+                    case "identifiant":
+                        this.identifiant = Integer.valueOf(content[1]);
+                        break;
+                    case "montant":
+                        this.montant = Double.valueOf(content[1]);
+                        break;
+                    case "numCompteCible":
+                        this.numCompteCible = Double.valueOf(content[1]);
+                        break;
+                    case "effectue":
+                        this.effectue = Boolean.valueOf(content[1]);
+                        break;
+                    case "dateFlux":
+                        this.dateFlux = new Date(content[1]); //Need work
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
 
 }
