@@ -4,10 +4,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
-
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-
+import java.io.FileReader;
 import fr.banque.composants.Client;
 import fr.banque.composants.Compte;
 import fr.banque.composants.CompteCourant;
@@ -46,11 +47,12 @@ public class Main {
 
 	public static void afficherClient(ArrayList<Client> collectionClient) {
 		String str;
+		System.out.println(" Affichage des Clients");
+		System.out.println("                                                   ");
 		for (Client client : collectionClient) {
 
 			str = client.toString();
-			System.out.println(" Affichage des Clients");
-			System.out.println("                                                   ");
+
 			System.out.println(str);
 			System.out.println("                                                   ");
 		}
@@ -79,15 +81,18 @@ public class Main {
 
 	public static void afficherCompte(ArrayList<Compte> collectionCompte) {
 		String str;
+		System.out.println("                                                   ");
+		System.out.println(" Affichage des comptes ");
 		for (Compte compte : collectionCompte) {
 
 			str = compte.toString();
-			System.out.println("                                                   ");
-			System.out.println(" Affichage des comptes ");
+
 			System.out.println(str);
-			System.out.println("                                                   ");
+			
 		}
+		System.out.println("                                                   ");
 	}
+	
 
 	// 1.3.1 Adaptation du tableau des comptes
 	@SuppressWarnings("null")
@@ -105,11 +110,12 @@ public class Main {
 	public static void afficherTableID(Hashtable tableID) {
 		Enumeration e = tableID.elements();
 		Enumeration k = tableID.keys();
-		while (e.hasMoreElements())
-			System.out.println("Affichage de la table des identifiants");
-			System.out.println("                                                   ");
-			System.out.println("Identifiant Compte" + k.nextElement() + ":" + e.nextElement());
+		System.out.println("Affichage de la table des identifiants");
 		System.out.println("                                                   ");
+		while (e.hasMoreElements())
+			
+			System.out.println("Identifiant Compte" + k.nextElement() + ":" + e.nextElement());
+		
 
 	}
 
@@ -141,15 +147,16 @@ public class Main {
 
 	public static void afficherFlux(ArrayList<Flux> tableFlux) {
 		String str = null;
+		System.out.println("Affichage des Flux ");
+		System.out.println("                                                   ");
 		for (Flux flux : tableFlux) {
 
 			str = flux.toString();
-			System.out.println("Affichage des Flux ");
-			System.out.println("                                                   ");
+			
 			System.out.println(str);
-			System.out.println("                                                   ");
+			
 		}
-
+		System.out.println("                                                   ");
 	}
 
 	public static void mouvementFlux(ArrayList<Flux> tableFlux, ArrayList<Compte> collectionCompte) {
@@ -189,29 +196,27 @@ public class Main {
 
 
 	public  static void exportJson (ArrayList<Flux> tableFlux) {
-		JSONObject obj = new JSONObject();
-		obj.put("name", "Max");
-	    JSONArray list = new JSONArray(); 
-	    list.add("oo");
-	    JSONArray tFlux = new JSONArray();
-	    for (Flux flux : tableFlux)
-	    {
-	    	tFlux.add(flux.getCommentaire().toString());
-	    }
-	    
-	    obj.put("list", list);
-	    obj.put("Table de flux", tFlux);
-	   try (FileWriter file = new FileWriter("flux.json")){
-		   file.write(obj.toString());
-		   file.flush();
-	   }
-	   catch (IOException e) {
-		   e.printStackTrace();
-	   }
-	   System.out.println("Fichier en .JSON");
-	   System.out.println(obj);
-	 
-	       
-	       
+		JSONArray a = (JSONArray) parser.parse(new FileReader("flux.json"));
+
+		  for (Object o : a)
+		  {
+		    JSONObject person = (JSONObject) o;
+
+		    String name = (String) person.get("name");
+		    System.out.println(name);
+
+		    String city = (String) person.get("city");
+		    System.out.println(city);
+
+		    String job = (String) person.get("job");
+		    System.out.println(job);
+
+		    JSONArray cars = (JSONArray) person.get("cars");
+
+		    for (Object c : cars)
+		    {
+		      System.out.println(c+"");
+		    }
+}
 	}
 }

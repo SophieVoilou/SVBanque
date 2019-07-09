@@ -1,0 +1,8 @@
+{"Table de flux":
+ {"Debit":
+ 	{"commentaire":"null", "identifiant":2, "montant": 154, "numCompteCible": 5,"effectue":"non"},
+  "Credit":
+  {"commentaire":"null", "identifiant":5, "montant": 164, "numCompteCible": 3,"effectue":"non"} 
+ }
+
+}
