@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<compte>
+	<compteCourant>
+		<libelle>Compte courant</libelle>
+		<solde>748</solde>
+		<client>
+			<nom>client4</nom>
+			<prenom>prenom4</prenom>
+			<numClient>8</numClient>
+		</client>
+	</compteCourant>
+	<compteEpargne>
+		<libelle>Compte Epargne</libelle>
+		<solde>848</solde>
+		<client>
+			<nom>client5</nom>
+			<prenom>prenom5</prenom>
+			<numClient>9</numClient>
+		</client>
+	</compteEpargne>
+</compte>
+
